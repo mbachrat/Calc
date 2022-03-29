@@ -32,13 +32,75 @@ function operate(sign,a,b) {
     else if(sign == "+") {
         return add(a,b);
     }
-    else if(sign == "*") {
+    else if(sign == "x") {
         return multiply(a,b);
     }
-    else if(sign == "/") {
+    else if(sign == "÷") {
         return divide(a,b);
+    }
+    else {
+        return ("None");
     }
     
 }
 
-console.log(operate("/",2,3))
+const text = document.getElementById("text");
+let newText = "";
+let a = "x";
+let sign = "";
+text.innerText = "0";
+
+let btns = document.querySelectorAll("button");
+
+
+for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function (e) {
+        console.log(e.target.value)
+        let input = e.target.value;
+        numberCheck(input);
+    });
+}
+
+function numberCheck(input) {
+if (isNaN(input)) {
+    console.log("not a numb");
+    if (input == "=") {
+        a = Number(a);
+        newText = Number(newText)
+        text.innerText = operate(sign,a,newText);
+        a = operate(sign,a,newText);
+        newText = "";
+
+    }
+    else if(input == "clear") {
+        a = "x";
+        b = "x"
+        newText = ""
+        text.innerText = newText;
+        sign = "";
+    }
+    else {
+        if(sign != "") {
+            a = Number(a);
+            newText = Number(newText)
+            text.innerText = operate(sign,a,newText);
+            a = operate(sign,a,newText);
+            newText = "";
+            sign = input;
+        }
+        else {
+             a = newText;
+            sign = input;
+            newText = "";
+            return newText;
+        }
+    }
+}
+else {
+    
+    newText = newText + input;
+    text.innerText = newText;  
+    return newText;
+}
+};
+
