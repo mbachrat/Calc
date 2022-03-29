@@ -19,7 +19,7 @@ function divide(a,b) {
     }
     else {
         let sum = a/b;
-        return sum.toFixed(1);
+        return sum;
     }
 }
 
@@ -67,10 +67,10 @@ if (isNaN(input)) {
     if (input == "=") {
         a = Number(a);
         newText = Number(newText)
-        text.innerText = operate(sign,a,newText);
+        text.innerText = operate(sign,a,newText).round(4);
         a = operate(sign,a,newText);
         newText = "";
-
+        sign = "b";
     }
     else if(input == "clear") {
         a = "x";
@@ -80,19 +80,25 @@ if (isNaN(input)) {
         sign = "";
     }
     else {
-        if(sign != "") {
-            a = Number(a);
-            newText = Number(newText)
-            text.innerText = operate(sign,a,newText);
-            a = operate(sign,a,newText);
-            newText = "";
-            sign = input;
-        }
-        else {
-             a = newText;
+        if(sign == "") {
+            a = newText;
+           sign = input;
+           newText = "";
+           return newText;
+       }
+        
+        else if(sign == "b") {
             sign = input;
             newText = "";
             return newText;
+        }
+        else {
+            a = Number(a);
+            newText = Number(newText)
+            text.innerText = operate(sign,a,newText).round(4);
+            a = operate(sign,a,newText);
+            newText = "";
+            sign = input;
         }
     }
 }
@@ -104,3 +110,7 @@ else {
 }
 };
 
+Number.prototype.round = function(n) {
+    const d = Math.pow(10, n);
+    return Math.round((this + Number.EPSILON) * d) / d;
+  }
